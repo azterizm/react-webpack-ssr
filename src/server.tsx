@@ -1,10 +1,8 @@
 import express from 'express'
-import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import path from 'path'
+import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import App from './components/App'
 import { Html } from './components/Html'
-import configureStore from './state/store'
-import { Provider } from 'react-redux'
 
 const app = express()
 

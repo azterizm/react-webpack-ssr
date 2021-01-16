@@ -1,7 +1,7 @@
 import { hydrate } from "react-dom";
 import App from "./components/App";
 
-console.log('new test')
+console.log('another test')
 
 hydrate(
   <App state={window.APP_STATE} />,
