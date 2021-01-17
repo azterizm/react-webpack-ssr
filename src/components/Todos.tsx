@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import '../styles/Todos.css'
+import '../styles/Todos.css';
 
 interface Todo {
   userId: number,
@@ -11,8 +10,6 @@ interface Todo {
 
 export const Todos: FC = () => {
   const [todos, setTodos] = useState<Todo[] | null>(null)
-
-  const name = useSelector((state: { name: string }) => state.name)
 
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/todos')
@@ -28,7 +25,6 @@ export const Todos: FC = () => {
 
   return (
     <>
-      {name && <h1>Redux Value: {name}</h1>}
       <div className="todos">
         {todos?.map(({ id, title, completed }) => (
           <div id="todo" key={id}>

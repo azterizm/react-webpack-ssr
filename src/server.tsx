@@ -1,6 +1,7 @@
 import express from 'express'
 import path from 'path'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { StaticRouter } from 'react-router-dom'
 import App from './components/App'
 import { Html } from './components/Html'
 
@@ -8,12 +9,14 @@ const app = express()
 
 app.use(express.static(path.join(__dirname)))
 
-app.get('*', (_, res) => {
+app.get('*', (req, res) => {
 
   const state = { name: 'Bro!' }
 
   const appMarkup: string = renderToString(
-    <App state={state} />
+    <StaticRouter location={req.url}>
+      <App state={state} />
+    </StaticRouter>
   )
 
   const html: string = renderToStaticMarkup(

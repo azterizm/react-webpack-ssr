@@ -1,0 +1,19 @@
+ul#header {
+  list-style: none;
+  display: flex;
+  margin-top: 1em;
+  justify-content: space-around;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  border: 1px solid black;
+  border-radius: 30px;
+  padding: .5em 1em;
+}
+
+a.active {
+  color: white;
+  background-color: black;
+}
