@@ -9,6 +9,10 @@ const app = express()
 
 app.use(express.static(path.join(__dirname)))
 
+app.get('/robots.txt', (_, res) => {
+  res.send('User-agent: *')
+})
+
 app.get('*', (req, res) => {
 
   const state = { name: 'Bro!' }

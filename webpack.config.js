@@ -1,6 +1,7 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpackNodeExternals = require('webpack-node-externals')
+const {InjectManifest} = require('workbox-webpack-plugin')
 
 module.exports = [
   {
@@ -30,6 +31,13 @@ module.exports = [
         }
       ],
     },
+    plugins: [
+      new InjectManifest({
+        swSrc: './src/service-worker',
+        swDest: 'sw.js',
+        exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
+      })
+    ],
   },
 
   {

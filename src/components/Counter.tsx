@@ -1,18 +1,31 @@
-import React from "react";
+import {  useState } from "react"
 
-export class Counter extends React.Component<{}, { count: number }> {
-  constructor(props: any) {
-    super(props);
-    this.state = { count: 0 }
+export const Counter = () => {
+  const [count, setCount] = useState<number>(0)
+  const [recurse, setRecurse] = useState<boolean>(false)
+
+  const handleAdd = () => setCount(e => e + 1)
+
+  let recurseInterval: NodeJS.Timer
+  const handleRecurseStart = () => {
+    console.log('DOWN')
+    setTimeout(() => {
+      if (recurse) return
+      setRecurse(true)
+      return recurseInterval = setInterval(() => setCount(e => e + 1), 500)
+    }, 800);
   }
 
-  render() {
-    return (
-      <div id="counter">
-        <h1>{this.state.count}</h1>
-        <button onClick={() => this.setState({ count: this.state.count + 1 })}>Add</button>
-      </div>
-    );
+  const handleRecurseStop = () => {
+    if (!recurse) return
+    setRecurse(false)
+    clearInterval(recurseInterval)
   }
+
+  return (
+    <div className="counter">
+      <h1>{count}</h1>
+      <button onClick={handleAdd} onMouseDown={handleRecurseStart} onMouseUp={handleRecurseStop}>Add</button>
+    </div>
+  )
 }
-
