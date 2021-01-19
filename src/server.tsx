@@ -6,6 +6,7 @@ import App from './components/App'
 import { Html } from './components/Html'
 
 const app = express()
+const port = process.env.PORT ?? 5000
 
 app.use(express.static(path.join(__dirname)))
 
@@ -31,4 +32,4 @@ app.get('*', (req, res) => {
 
 })
 
-app.listen(5000, () => console.log('server runnin at 5000'))
+app.listen(port, () => console.log('server runnin at', port))
