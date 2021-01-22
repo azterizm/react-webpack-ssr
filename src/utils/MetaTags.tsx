@@ -1,13 +1,14 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import { Helmet } from "react-helmet";
 
 interface MetaTagsProps {
   title: string,
   description: string,
-  img?: string
+  img?: string,
+  children?: ReactNode
 }
 
-const MetaTags: FC<MetaTagsProps> = ({ title, description, img }) => (
+const MetaTags: FC<MetaTagsProps> = ({ title, description, img, children }) => (
   <Helmet>
     <title data-react-helmet="true">{'SSR App - ' + title}</title>
     <meta data-react-helmet="true" charSet="UTF-8" />
@@ -26,6 +27,7 @@ const MetaTags: FC<MetaTagsProps> = ({ title, description, img }) => (
     <meta data-react-helmet="true" name="twitter:title" content={title} />
     <meta data-react-helmet="true" name="twitter:description" content={description} />
     <meta data-react-helmet="true" name="twitter:image" content={img} />
+    {children}
   </Helmet>
 )
 

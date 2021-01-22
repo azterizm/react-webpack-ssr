@@ -9,7 +9,6 @@ export const Counter = () => {
 
   let recurseInterval: NodeJS.Timer
   const handleRecurseStart = () => {
-    console.log('DOWN')
     setTimeout(() => {
       if (recurse) return
       setRecurse(true)

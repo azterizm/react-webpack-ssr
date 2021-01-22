@@ -11,6 +11,8 @@ import { Helmet } from 'react-helmet'
 const app = express()
 const port = process.env.PORT ?? 5000
 
+app.use(express.static(path.join(__dirname)))
+
 app.use(robots({ UserAgent: '*', Disallow: '/profile', Sitemap: 'localhost:5000/sitemap.xml/' }))
 
 app.get('/sitemap.xml', (_, res) => {
@@ -41,9 +43,7 @@ app.get('/sitemap.xml', (_, res) => {
 })
 
 app.get('*', (req, res) => {
-
   const state = { name: 'Bro!' }
-
   const appMarkup: string = renderToString(
     <StaticRouter location={req.url}>
       <App state={state} />
@@ -57,7 +57,6 @@ app.get('*', (req, res) => {
   )
 
   res.send(html)
-
 })
 
 app.listen(port, () => console.log('server runnin at', port))

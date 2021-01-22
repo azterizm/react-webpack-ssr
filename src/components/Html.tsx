@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { HelmetData } from "react-helmet";
-import check from '../assets/check.png'
 
 interface HtmlProps {
   children: string,
@@ -36,8 +35,8 @@ export const Html: FC<HtmlProps> = ({ children, scripts, state, helmet }) => (
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
             navigator.serviceWorker.register('./sw.js')
-              .then(() => console.log('SW Registered'))
-              .catch(() => console.error('SW not supported'))
+            .then(() => console.log('SW Registered'))
+            .catch(() => console.error('SW not supported'))
           })
         }
         `

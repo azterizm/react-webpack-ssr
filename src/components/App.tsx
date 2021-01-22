@@ -21,6 +21,7 @@ const App: FC<AppProps> = ({ state }) => {
   return (
     <Provider store={store}>
       <div className="container">
+        <MetaTags title='Home' description='Home to everything' img='test.png'/>
         <Header />
         <Switch>
           <Route exact path='/' render={() => <h1>Time to change route!</h1>} />
