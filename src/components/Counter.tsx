@@ -1,4 +1,5 @@
-import {  useState } from "react"
+import { useState } from "react"
+import MetaTags from "../utils/MetaTags"
 
 export const Counter = () => {
   const [count, setCount] = useState<number>(0)
@@ -24,6 +25,7 @@ export const Counter = () => {
 
   return (
     <div className="counter">
+      <MetaTags title='Counter' description='counter' img='counter.png' />
       <h1>{count}</h1>
       <button onClick={handleAdd} onMouseDown={handleRecurseStart} onMouseUp={handleRecurseStop}>Add</button>
     </div>

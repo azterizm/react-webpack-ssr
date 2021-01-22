@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import '../styles/Todos.css';
+import MetaTags from "../utils/MetaTags";
 
 interface Todo {
   userId: number,
@@ -24,8 +25,8 @@ export const Todos: FC = () => {
   )
 
   return (
-    <>
       <div className="todos">
+        <MetaTags title='Todos' description='Todos' img='todos.png'/>
         {todos?.map(({ id, title, completed }) => (
           <div id="todo" key={id}>
             <h1>{title}</h1>
@@ -33,6 +34,5 @@ export const Todos: FC = () => {
           </div>
         ))}
       </div>
-    </>
   )
 }

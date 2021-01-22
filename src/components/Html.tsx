@@ -1,20 +1,22 @@
 import { FC } from "react";
+import { HelmetData } from "react-helmet";
+import check from '../assets/check.png'
 
 interface HtmlProps {
   children: string,
   scripts: string[],
+  helmet: HelmetData
   state?: {
     name: string
-  }
+  },
 }
 
-export const Html: FC<HtmlProps> = ({ children, scripts, state }) => (
+export const Html: FC<HtmlProps> = ({ children, scripts, state, helmet }) => (
   <html lang="en">
     <head>
-      <meta charSet="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>SSR App</title>
       <link rel="stylesheet" href="styles.css" type='text/css' />
+      {helmet.title.toComponent()}
+      {helmet.meta.toComponent()}
     </head>
     <body>
 

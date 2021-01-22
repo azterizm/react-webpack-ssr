@@ -3,11 +3,17 @@ import { Provider } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import configureStore from "../state/store";
 import '../styles/App.css';
+import MetaTags from "../utils/MetaTags";
 import { Counter } from './Counter';
 import { Header } from "./Header";
 import { Profile } from "./Profile";
 import { Todos } from "./Todos";
-import { AppProps } from "./types/AppProps";
+
+export interface AppProps {
+  state: {
+    name: string;
+  };
+}
 
 const App: FC<AppProps> = ({ state }) => {
   const store = configureStore(state)
