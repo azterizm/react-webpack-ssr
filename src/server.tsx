@@ -60,6 +60,4 @@ app.get('*', (req, res) => {
 
 })
 
-app.use(express.static(path.join(__dirname)))
-
 app.listen(port, () => console.log('server runnin at', port))
