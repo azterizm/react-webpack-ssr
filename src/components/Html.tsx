@@ -13,9 +13,12 @@ interface HtmlProps {
 export const Html: FC<HtmlProps> = ({ children, scripts, state, helmet }) => (
   <html lang="en">
     <head>
-      <link rel="stylesheet" href="styles.css" type='text/css' />
       {helmet.title.toComponent()}
       {helmet.meta.toComponent()}
+      <link rel="stylesheet" href="styles.css" type='text/css' />
+      <link rel="manifest" href="manifest.json"/>
+      <link rel="apple-touch-icon" href="android/android-launchericon-192-192.png"/>
+      <meta name="theme-color" content="#000000"/>
     </head>
     <body>
 

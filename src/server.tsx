@@ -13,7 +13,7 @@ const port = process.env.PORT ?? 5000
 
 app.use(express.static(path.join(__dirname)))
 
-app.use(robots({ UserAgent: '*', Disallow: '/profile', Sitemap: 'localhost:5000/sitemap.xml/' }))
+app.use(robots({ UserAgent: '*', Disallow: '/profile', Sitemap: 'https://react-webpack-ssr.herokuapp.com/sitemap.xml/' }))
 
 app.get('/sitemap.xml', (_, res) => {
   res.header('Content-Type', 'application/xml')
@@ -56,7 +56,7 @@ app.get('*', (req, res) => {
     <Html children={appMarkup} scripts={['main.js']} state={state} helmet={helmet} />
   )
 
-  res.send(html)
+  res.send(`<!DOCTYPE html> ${html}`)
 })
 
 app.listen(port, () => console.log('server runnin at', port))

@@ -1,6 +1,7 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpackNodeExternals = require('webpack-node-externals')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const {InjectManifest} = require('workbox-webpack-plugin')
 
 module.exports = [
@@ -40,6 +41,7 @@ module.exports = [
         swSrc: './src/service-worker',
         swDest: 'sw.js',
         exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
+        include: ['main.js']
       })
     ],
   },
@@ -49,6 +51,7 @@ module.exports = [
     target: 'node',
     entry: './src/server.tsx',
     output: {
+      publicPath: '/',
       filename: 'server.js',
       path: path.resolve(__dirname, 'build'),
     },
@@ -80,7 +83,8 @@ module.exports = [
       ],
     },
     plugins: [
-      new MiniCssExtractPlugin({ filename: 'styles.css' })
+      new MiniCssExtractPlugin({ filename: 'styles.css' }),
+      new CopyWebpackPlugin({ patterns: [ { from: 'public' } ] })
     ],
   }
 ]
