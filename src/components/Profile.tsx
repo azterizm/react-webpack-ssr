@@ -9,15 +9,12 @@ export const Profile: FC = () => {
   const dispatch = useDispatch()
   const reduxName = useSelector((state: { name: string }) => state.name)
 
-  const handleChange = () => {
+  const handleAssign = () => {
     if (!name) return
     dispatch(assignUser({ name }))
   }
 
-  const handleClear = () => {
-    if (!name) return
-    dispatch(clearUser())
-  }
+  const handleClear = () => dispatch(clearUser())
 
   return (
     <div className="profile">
@@ -26,7 +23,7 @@ export const Profile: FC = () => {
       <input type="text" name="name" id="profileName"
         value={name} onChange={e => setName(e.target.value)}
       />
-      <button onClick={handleChange}>Change</button>
+      <button onClick={handleAssign}>Change</button>
       <button onClick={handleClear}>Clear User</button>
     </div>
   )
