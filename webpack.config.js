@@ -4,6 +4,8 @@ const webpackNodeExternals = require('webpack-node-externals')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const {InjectManifest} = require('workbox-webpack-plugin')
 
+// TODO: Make production build
+// TODO: Use only one Css build to optimize
 module.exports = [
   {
     name: 'client',

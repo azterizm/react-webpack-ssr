@@ -9,12 +9,13 @@ import { Helmet } from 'react-helmet'
 import { StaticRouter } from 'react-router-dom'
 import App from './components/App'
 import { Html } from './components/Html'
-import  siteMapMiddleware  from './middlewares/sitemapMiddleware'
+import siteMapMiddleware from './routes/sitemapMiddleware'
 import authRouter from './routes/localAuth'
 import flash from 'connect-flash'
-//TODO: Change state user type
 import { users, User } from './utils/mocks'
+import connectFSStore from 'connect-fs2'
 
+//TODO: Change state user type
 passport.use(new Strategy((username, password, done) => {
   try {
     const user: User | undefined = users.find(user => user.username === username)
@@ -37,6 +38,7 @@ passport.deserializeUser((id, done) => {
 
 const app = express()
 const PORT = process.env.PORT ?? 5000
+const FSStore = connectFSStore(session)
 
 app.use(express.static(path.join(__dirname)))
 app.use(robots({
@@ -47,7 +49,13 @@ app.use(robots({
 app.use('/sitemap.xml', siteMapMiddleware)
 app.use(express.urlencoded({ extended: true }))
 app.use(flash())
-app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }))
+app.use(session({
+  secret: 'keyboard cat',
+  store: new FSStore,
+  resave: false,
+  saveUninitialized: false,
+  cookie: { maxAge: 60 * 60 * 1000 }
+}))
 app.use(passport.initialize())
 app.use(passport.session())
 

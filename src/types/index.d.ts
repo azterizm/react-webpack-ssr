@@ -1,5 +1,7 @@
 declare module 'jstoxml'
 declare module 'express-robots-txt'
+declare module 'connect-fs2'
+
 declare module '*.png'
 declare module '*.jpg'
 declare module '*.jpeg'
