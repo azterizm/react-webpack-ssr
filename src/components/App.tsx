@@ -6,6 +6,7 @@ import '../styles/App.css';
 import MetaTags from "../utils/MetaTags";
 import { Counter } from './Counter';
 import { Header } from "./Header";
+import { Login } from "./Login";
 import { Profile } from "./Profile";
 import { Todos } from "./Todos";
 
@@ -18,6 +19,8 @@ export interface AppProps {
 const App: FC<AppProps> = ({ state }) => {
   const store = configureStore(state)
 
+  if (typeof window !== 'undefined') console.log('state', window.APP_STATE)
+
   return (
     <Provider store={store}>
       <div className="container">
@@ -28,6 +31,7 @@ const App: FC<AppProps> = ({ state }) => {
           <Route path='/counter' component={Counter} />
           <Route path='/profile' component={Profile} />
           <Route path='/todos' component={Todos} />
+          <Route path='/login' component={Login} />
         </Switch>
       </div>
     </Provider>

@@ -1,49 +1,59 @@
 import express from 'express'
+import robots from 'express-robots-txt'
+import session from 'express-session'
+import passport from 'passport'
+import { Strategy } from 'passport-local'
 import path from 'path'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
+import { Helmet } from 'react-helmet'
 import { StaticRouter } from 'react-router-dom'
 import App from './components/App'
 import { Html } from './components/Html'
-import sitemap from './utils/sitemap'
-import robots from 'express-robots-txt'
-import { Helmet } from 'react-helmet'
+import  siteMapMiddleware  from './middlewares/sitemapMiddleware'
+import authRouter from './routes/localAuth'
+import flash from 'connect-flash'
+//TODO: Change state user type
+import { users, User } from './utils/mocks'
 
-const app = express()
-const port = process.env.PORT ?? 5000
+passport.use(new Strategy((username, password, done) => {
+  try {
+    const user: User | undefined = users.find(user => user.username === username)
+    if (!user) return done(null, false, { message: 'Incorrect username.' })
+    if (user.password !== password) return done(null, false, { message: 'Incorrect password.' })
+    return done(null, user)
+  } catch (error) {
+    return done(error)
+  }
+}))
 
-app.use(express.static(path.join(__dirname)))
-
-app.use(robots({ UserAgent: '*', Disallow: '/profile', Sitemap: 'https://react-webpack-ssr.herokuapp.com/sitemap.xml/' }))
-
-app.get('/sitemap.xml', (_, res) => {
-  res.header('Content-Type', 'application/xml')
-
-  const header = `<?xml version="1.0" encoding="UTF-8"?>`
-
-  const result = sitemap(
-    [
-      {
-        loc: '',
-        lastmod: new Date().toISOString(),
-        'video:video': {
-          'video:title': 'Sample',
-          'video:description': 'A sample video for test purposes'
-        },
-        'image:image': {
-          'image:title': 'Sample'
-        }
-      },
-      { loc: 'todos', lastmod: new Date().toISOString() },
-      { loc: 'counter', lastmod: new Date('2020-02-01 5:00 PM').toISOString() }
-    ], header, 'react-webpack-ssr.herokuapp.com'
-  )
-
-  console.log(result)
-  res.send(result)
+passport.serializeUser((user, done) => {
+  done(null, user.id)
 })
 
+passport.deserializeUser((id, done) => {
+  const user = users.find(user => user.id === id)
+  return done(null, user)
+})
+
+const app = express()
+const PORT = process.env.PORT ?? 5000
+
+app.use(express.static(path.join(__dirname)))
+app.use(robots({
+  UserAgent: '*',
+  Disallow: '/profile',
+  Sitemap: 'https://react-webpack-ssr.herokuapp.com/sitemap.xml/'
+}))
+app.use('/sitemap.xml', siteMapMiddleware)
+app.use(express.urlencoded({ extended: true }))
+app.use(flash())
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }))
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use('/account', authRouter)
 app.get('*', (req, res) => {
-  const state = { name: 'Bro!' }
+  const state = { name: 'Bro!', user: req.user, flash: req.flash() }
   const appMarkup: string = renderToString(
     <StaticRouter location={req.url}>
       <App state={state} />
@@ -59,4 +69,4 @@ app.get('*', (req, res) => {
   res.send(`<!DOCTYPE html> ${html}`)
 })
 
-app.listen(port, () => console.log('server runnin at', port))
+app.listen(PORT, () => console.log('server runnin at', PORT))

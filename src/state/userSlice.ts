@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { User, AddUser } from "./User"
 
-export const initialState: User = {
+export const initialState: { name: string } = {
   name: ''
 }
 

@@ -11,3 +11,8 @@ interface SiteMapURL {
   lastmod: string?,
   [x: string]: any
 }
+
+interface Flash {
+  success?: string[],
+  error?: string[]
+}

@@ -41,7 +41,7 @@ module.exports = [
         swSrc: './src/service-worker',
         swDest: 'sw.js',
         exclude: [/\.map$/, /asset-manifest\.json$/, /LICENSE/],
-        include: ['main.js']
+        include: ['/main.js', '/styles.css']
       })
     ],
   },
