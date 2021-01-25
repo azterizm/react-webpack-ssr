@@ -5,9 +5,7 @@ interface HtmlProps {
   children: string,
   scripts: string[],
   helmet: HelmetData
-  state?: {
-    name: string
-  },
+  state?: AppState
 }
 
 export const Html: FC<HtmlProps> = ({ children, scripts, state, helmet }) => (

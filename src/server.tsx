@@ -53,8 +53,9 @@ app.use(passport.session())
 
 app.use('/account', authRouter)
 app.get('*', (req, res) => {
-  const state = { name: 'Bro!', user: req.user, flash: req.flash() }
-  const appMarkup: string = renderToString(
+  const state: AppState = { name: 'Bro!', user: req.user, flash: req.flash() }
+
+  let appMarkup: string = renderToString(
     <StaticRouter location={req.url}>
       <App state={state} />
     </StaticRouter>

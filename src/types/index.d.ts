@@ -16,3 +16,11 @@ interface Flash {
   success?: string[],
   error?: string[]
 }
+
+interface AppState {
+  name: string,
+  user: User,
+  flash: {
+    [x: string]: string[]
+  }
+}

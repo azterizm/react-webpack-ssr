@@ -11,7 +11,7 @@ router.post(
     failureRedirect: '/login',
     session: true,
     failureFlash: true,
-    successFlash: "Successfully logged in.",
+    successFlash: "Logged out.",
   }),
   (_, res) => {
     res.redirect('/')
