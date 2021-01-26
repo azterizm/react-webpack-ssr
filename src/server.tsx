@@ -15,6 +15,8 @@ import flash from 'connect-flash'
 import { users, User } from './utils/mocks'
 import connectFSStore from 'connect-fs2'
 
+console.log('')
+
 //TODO: Change state user type
 passport.use(new Strategy((username, password, done) => {
   try {
