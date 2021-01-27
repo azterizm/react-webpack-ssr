@@ -25,17 +25,21 @@ export const Profile: FC = () => {
 
   if (typeof window !== 'undefined') user = window.APP_STATE.user
 
+
+  console.log('user', user)
   if (showUser) {
     userDetails = user ? (
       <div id="details">
         <h1>Hey, {user?.username}!</h1>
         <p>Your email address: {user?.email}</p>
         <button onClick={handleLogout}>Logout</button>
+        <pre>{JSON.stringify(user)}</pre>
       </div>
     ) : (
         <div id="details">
           <h1>Not logged in.</h1>
           <Link to='/login'>Login</Link>
+          <a href='account/login/facebook'>Connect with Facebook</a>
         </div>
       )
   } else {

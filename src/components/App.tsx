@@ -7,6 +7,7 @@ import MetaTags from "../utils/MetaTags";
 import { Counter } from './Counter';
 import { Header } from "./Header";
 import { Login } from "./Login";
+import { PrivacyPolicy } from "./PrivacyPolicy";
 import { Profile } from "./Profile";
 import { Todos } from "./Todos";
 
@@ -32,6 +33,8 @@ const App: FC<AppProps> = ({ state }) => {
           <Route path='/profile' component={Profile} />
           <Route path='/todos' component={Todos} />
           <Route path='/login' component={Login} />
+          <Route path='/privacypolicy' component={PrivacyPolicy} />
+          <Route render={() => <h1>404 Not Found!</h1>}/>
         </Switch>
       </div>
     </Provider>

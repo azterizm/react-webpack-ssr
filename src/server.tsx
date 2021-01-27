@@ -2,7 +2,7 @@ import express from 'express'
 import robots from 'express-robots-txt'
 import session from 'express-session'
 import passport from 'passport'
-import { Strategy } from 'passport-local'
+import { Strategy as LocalStrategy } from 'passport-local'
 import path from 'path'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { Helmet } from 'react-helmet'
@@ -14,11 +14,15 @@ import authRouter from './routes/localAuth'
 import flash from 'connect-flash'
 import { users, User } from './utils/mocks'
 import connectFSStore from 'connect-fs2'
+import { Strategy as FacebookStrategy } from 'passport-facebook'
 
-console.log('')
+/*
+Facebook CREDENTIALS
+APP_ID: 569740240649019
+APP_SECRET: 246d37d2941f405c1b62e38d1f6911a0
+*/
 
-//TODO: Change state user type
-passport.use(new Strategy((username, password, done) => {
+passport.use(new LocalStrategy((username, password, done) => {
   try {
     const user: User | undefined = users.find(user => user.username === username)
     if (!user) return done(null, false, { message: 'Incorrect username.' })
@@ -29,13 +33,27 @@ passport.use(new Strategy((username, password, done) => {
   }
 }))
 
+passport.use(new FacebookStrategy({
+  clientID: '569740240649019',
+  clientSecret: '246d37d2941f405c1b62e38d1f6911a0',
+  callbackURL: '/account/login/facebook/return',
+  profileFields: ['id', 'displayName', 'photos', 'email']
+}, (_, __, profile, done) => {
+  try {
+    // in real this would validate from db
+    done(null, profile)
+  } catch (error) {
+    done(error)
+  }
+}))
+
+
 passport.serializeUser((user, done) => {
-  done(null, user.id)
+  done(null, user)
 })
 
-passport.deserializeUser((id, done) => {
-  const user = users.find(user => user.id === id)
-  return done(null, user)
+passport.deserializeUser((obj, done) => {
+  done(null, obj as any)
 })
 
 const app = express()
