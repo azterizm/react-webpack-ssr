@@ -36,7 +36,7 @@ passport.use(new LocalStrategy((username, password, done) => {
 passport.use(new FacebookStrategy({
   clientID: '569740240649019',
   clientSecret: '246d37d2941f405c1b62e38d1f6911a0',
-  callbackURL: '/account/login/facebook/return',
+  callbackURL: 'https://react-webpack-ssr.herokuapp.com/account/login/facebook/return',
   profileFields: ['id', 'displayName', 'photos', 'email']
 }, (_, __, profile, done) => {
   try {

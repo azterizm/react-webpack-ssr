@@ -34,7 +34,6 @@ const App: FC<AppProps> = ({ state }) => {
           <Route path='/todos' component={Todos} />
           <Route path='/login' component={Login} />
           <Route path='/privacypolicy' component={PrivacyPolicy} />
-          <Route render={() => <h1>404 Not Found!</h1>}/>
         </Switch>
       </div>
     </Provider>
