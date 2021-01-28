@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon build/server.js --watch build",
     "serve": "node build/server.js",
-    "build": "webpack",
+    "build": "webpack --config webpack.prod.config.js",
     "watch": "webpack --progress --color --watch",
     "dev": "run-p watch start"
   },
