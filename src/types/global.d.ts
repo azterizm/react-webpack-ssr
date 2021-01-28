@@ -3,11 +3,7 @@ export = {}
 
 declare global {
   interface Window {
-    APP_STATE: {
-      name: string,
-      user: MockUser,
-      flash: Flash
-    }
+    APP_STATE: AppState
   }
 
   namespace Express {

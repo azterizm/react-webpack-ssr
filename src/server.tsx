@@ -1,20 +1,22 @@
+import flash from 'connect-flash'
+import connectRedisStore from 'connect-redis'
 import express from 'express'
 import robots from 'express-robots-txt'
 import session from 'express-session'
 import passport from 'passport'
+import { Strategy as FacebookStrategy } from 'passport-facebook'
 import { Strategy as LocalStrategy } from 'passport-local'
 import path from 'path'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { Helmet } from 'react-helmet'
 import { StaticRouter } from 'react-router-dom'
+import { createClient } from 'redis'
 import App from './components/App'
 import { Html } from './components/Html'
-import siteMapMiddleware from './routes/sitemapMiddleware'
 import authRouter from './routes/localAuth'
-import flash from 'connect-flash'
-import { users, User } from './utils/mocks'
-import connectFSStore from 'connect-fs2'
-import { Strategy as FacebookStrategy } from 'passport-facebook'
+import siteMapMiddleware from './routes/sitemapMiddleware'
+import { User, users } from './utils/mocks'
+import FSStore from 'connect-fs2'
 
 /*
 Facebook CREDENTIALS
@@ -38,15 +40,27 @@ passport.use(new FacebookStrategy({
   clientSecret: '246d37d2941f405c1b62e38d1f6911a0',
   callbackURL: 'https://react-webpack-ssr.herokuapp.com/account/login/facebook/return',
   profileFields: ['id', 'displayName', 'photos', 'email']
-}, (_, __, profile, done) => {
+}, (accessToken, refreshToken, profile, done) => {
+  const FBUser: User = {
+    id: profile.id,
+    username: profile.displayName,
+    email: (profile as any).emails[0].value,
+    token: accessToken,
+    refreshToken: refreshToken
+  }
+
+  const user = users.find(user => user.id === FBUser.id)
+
   try {
-    // in real this would validate from db
-    done(null, profile)
+    if (user) return done(null, user)
+    if (!user) {
+      users.push(FBUser)
+      return done(null, FBUser)
+    }
   } catch (error) {
     done(error)
   }
 }))
-
 
 passport.serializeUser((user, done) => {
   done(null, user)
@@ -58,7 +72,7 @@ passport.deserializeUser((obj, done) => {
 
 const app = express()
 const PORT = process.env.PORT ?? 5000
-const FSStore = connectFSStore(session)
+const FS = FSStore(session)
 
 app.use(express.static(path.join(__dirname)))
 app.use(robots({
@@ -71,7 +85,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(flash())
 app.use(session({
   secret: 'keyboard cat',
-  store: new FSStore,
+  store: new FS,
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 60 * 60 * 1000 }

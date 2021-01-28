@@ -24,9 +24,8 @@ export const Profile: FC = () => {
   }
 
   if (typeof window !== 'undefined') user = window.APP_STATE.user
-
-
   console.log('user', user)
+
   if (showUser) {
     userDetails = user ? (
       <div id="details">
@@ -36,12 +35,12 @@ export const Profile: FC = () => {
         <pre>{JSON.stringify(user)}</pre>
       </div>
     ) : (
-        <div id="details">
-          <h1>Not logged in.</h1>
-          <Link to='/login'>Login</Link>
-          <a href='account/login/facebook'>Connect with Facebook</a>
-        </div>
-      )
+      <div id="details">
+        <h1>Not logged in.</h1>
+        <Link to='/login'>Login</Link>
+        <a href='account/login/facebook'>Connect with Facebook</a>
+      </div>
+    )
   } else {
     userDetails = (
       <div id="details">
