@@ -9,6 +9,7 @@ import { Header } from "./Header";
 import { Login } from "./Login";
 import { PrivacyPolicy } from "./PrivacyPolicy";
 import { Profile } from "./Profile";
+import { TermsAndConditions } from "./TermsAndConditions";
 import { Todos } from "./Todos";
 
 export interface AppProps {
@@ -34,6 +35,7 @@ const App: FC<AppProps> = ({ state }) => {
           <Route path='/todos' component={Todos} />
           <Route path='/login' component={Login} />
           <Route path='/privacypolicy' component={PrivacyPolicy} />
+          <Route path='/terms-conditions' component={TermsAndConditions} />
         </Switch>
       </div>
     </Provider>
