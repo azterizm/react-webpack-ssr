@@ -49,7 +49,7 @@ router.post('/facebook/ddc', (req, res) => {
 
 router.get(
   '/login/google',
-  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
+  passport.authenticate('google', { scope: ['profile', 'email'] })
 )
 
 router.get(
