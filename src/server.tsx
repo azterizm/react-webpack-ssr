@@ -13,16 +13,12 @@ import { StaticRouter } from 'react-router-dom'
 import { createClient } from 'redis'
 import App from './components/App'
 import { Html } from './components/Html'
-import authRouter from './routes/localAuth'
-import siteMapMiddleware from './routes/sitemapMiddleware'
+import authRouter from './backend/localAuth'
+import siteMapMiddleware from './backend/sitemapMiddleware'
 import { User, users } from './utils/mocks'
-import FSStore from 'connect-fs2'
+import dotenv from 'dotenv'
 
-/*
-Facebook CREDENTIALS
-APP_ID: 569740240649019
-APP_SECRET: 246d37d2941f405c1b62e38d1f6911a0
-*/
+dotenv.config()
 
 passport.use(new LocalStrategy((username, password, done) => {
   try {
@@ -36,9 +32,9 @@ passport.use(new LocalStrategy((username, password, done) => {
 }))
 
 passport.use(new FacebookStrategy({
-  clientID: '569740240649019',
-  clientSecret: '246d37d2941f405c1b62e38d1f6911a0',
-  callbackURL: 'https://react-webpack-ssr.herokuapp.com/account/login/facebook/return',
+  clientID: process.env.FB_CLIENT_ID ?? '',
+  clientSecret: process.env.FB_CLIENT_SECRET ?? '',
+  callbackURL: process.env.FB_CALLBACK_URL ?? '',
   profileFields: ['id', 'displayName', 'photos', 'email']
 }, (accessToken, refreshToken, profile, done) => {
   const FBUser: User = {
@@ -72,7 +68,12 @@ passport.deserializeUser((obj, done) => {
 
 const app = express()
 const PORT = process.env.PORT ?? 5000
-const FS = FSStore(session)
+const redisClient = createClient({
+  host: process.env.REDIS_HOST ?? '',
+  port: Number(process.env.REDIS_PORT) ?? '',
+  password: process.env.REDIS_PASSWORD ?? ''
+})
+const redisStore = connectRedisStore(session)
 
 app.use(express.static(path.join(__dirname)))
 app.use(robots({
@@ -85,7 +86,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(flash())
 app.use(session({
   secret: 'keyboard cat',
-  store: new FS,
+  store: new redisStore({ client: redisClient, ttl: 60 * 2 }),
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 60 * 60 * 1000 }
