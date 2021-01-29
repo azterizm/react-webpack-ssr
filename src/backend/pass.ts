@@ -48,25 +48,26 @@ export default () => {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? '',
     callbackURL: process.env.GOOGLE_CALLBACK_URL ?? ''
   }, (accessToken, refreshToken, profile, done) => {
-    const googleUser: User = {
-      id: profile.id,
-      username: profile.name?.givenName ?? '',
-      email: (profile as any).emails[0].value,
-      token: accessToken,
-      refreshToken: refreshToken
-    }
+    done(null, profile)
+    // const googleUser: User = {
+    //   id: profile.id,
+    //   username: '',
+    //   email: '',
+    //   token: accessToken,
+    //   refreshToken: refreshToken
+    // }
 
-    const user = users.find(user => user.id === googleUser.id)
+    // const user = users.find(user => user.id === googleUser.id)
 
-    try {
-      if (user) return done(null, user)
-      if (!user) {
-        users.push(googleUser)
-        return done(null, googleUser)
-      }
-    } catch (err) {
-      done(err)
-    }
+    // try {
+    //   if (user) return done(null, user)
+    //   if (!user) {
+    //     users.push(googleUser)
+    //     return done(null, googleUser)
+    //   }
+    // } catch (err) {
+    //   done(err)
+    // }
   }))
 
   passport.serializeUser((user, done) => {
