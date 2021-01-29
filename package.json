@@ -10,11 +10,6 @@
     "watch": "webpack --progress --color --watch",
     "dev": "run-p watch start"
   },
-  "engines": {
-    "node": "14.15.4",
-    "npm": "6.14.10",
-    "yarn": "1.22.5"
-  },
   "devDependencies": {
     "@types/connect-flash": "^0.0.36",
     "@types/connect-redis": "^0.0.16",
