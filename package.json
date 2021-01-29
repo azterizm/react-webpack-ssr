@@ -10,6 +10,11 @@
     "watch": "webpack --progress --color --watch",
     "dev": "run-p watch start"
   },
+  "engines": {
+    "node": "14.15.4",
+    "npm": "6.14.10",
+    "yarn": "1.22.5"
+  },
   "devDependencies": {
     "@types/connect-flash": "^0.0.36",
     "@types/connect-redis": "^0.0.16",
@@ -20,6 +25,7 @@
     "@types/node": "^14.14.21",
     "@types/passport": "^1.0.5",
     "@types/passport-facebook": "^2.1.10",
+    "@types/passport-google-oauth": "^1.0.41",
     "@types/passport-local": "^1.0.33",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
@@ -63,6 +69,7 @@
     "jstoxml": "^2.0.3",
     "passport": "^0.4.1",
     "passport-facebook": "^3.0.0",
+    "passport-google-oauth": "^2.0.0",
     "passport-local": "^1.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

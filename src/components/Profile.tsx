@@ -39,6 +39,7 @@ export const Profile: FC = () => {
         <h1>Not logged in.</h1>
         <Link to='/login'>Login</Link>
         <a href='account/login/facebook'>Connect with Facebook</a>
+        <a href='account/login/google'>Connect with Google</a>
       </div>
     )
   } else {

@@ -1,70 +1,23 @@
 import flash from 'connect-flash'
 import connectRedisStore from 'connect-redis'
+import dotenv from 'dotenv'
 import express from 'express'
 import robots from 'express-robots-txt'
 import session from 'express-session'
 import passport from 'passport'
-import { Strategy as FacebookStrategy } from 'passport-facebook'
-import { Strategy as LocalStrategy } from 'passport-local'
 import path from 'path'
 import { renderToStaticMarkup, renderToString } from 'react-dom/server'
 import { Helmet } from 'react-helmet'
 import { StaticRouter } from 'react-router-dom'
 import { createClient } from 'redis'
+import authRouter from './backend/localAuth'
+import passportConfig from './backend/pass'
+import siteMapMiddleware from './backend/sitemapMiddleware'
 import App from './components/App'
 import { Html } from './components/Html'
-import authRouter from './backend/localAuth'
-import siteMapMiddleware from './backend/sitemapMiddleware'
-import { User, users } from './utils/mocks'
-import dotenv from 'dotenv'
 
 dotenv.config()
-
-passport.use(new LocalStrategy((username, password, done) => {
-  try {
-    const user: User | undefined = users.find(user => user.username === username)
-    if (!user) return done(null, false, { message: 'Incorrect username.' })
-    if (user.password !== password) return done(null, false, { message: 'Incorrect password.' })
-    return done(null, user)
-  } catch (error) {
-    return done(error)
-  }
-}))
-
-passport.use(new FacebookStrategy({
-  clientID: process.env.FB_CLIENT_ID ?? '',
-  clientSecret: process.env.FB_CLIENT_SECRET ?? '',
-  callbackURL: process.env.FB_CALLBACK_URL ?? '',
-  profileFields: ['id', 'displayName', 'photos', 'email']
-}, (accessToken, refreshToken, profile, done) => {
-  const FBUser: User = {
-    id: profile.id,
-    username: profile.displayName,
-    email: (profile as any).emails[0].value,
-    token: accessToken,
-    refreshToken: refreshToken
-  }
-
-  const user = users.find(user => user.id === FBUser.id)
-
-  try {
-    if (user) return done(null, user)
-    if (!user) {
-      users.push(FBUser)
-      return done(null, FBUser)
-    }
-  } catch (error) {
-    done(error)
-  }
-}))
-
-passport.serializeUser((user, done) => {
-  done(null, user)
-})
-
-passport.deserializeUser((obj, done) => {
-  done(null, obj as any)
-})
+passportConfig()
 
 const app = express()
 const PORT = process.env.PORT ?? 5000

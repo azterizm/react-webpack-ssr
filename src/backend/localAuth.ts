@@ -47,4 +47,15 @@ router.post('/facebook/ddc', (req, res) => {
   return
 })
 
+router.get(
+  '/login/google',
+  passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] })
+)
+
+router.get(
+  '/login/google/return',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  (_, res) => res.redirect('/')
+)
+
 export default router
