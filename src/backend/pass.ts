@@ -71,7 +71,7 @@ export default () => {
   }))
 
   passport.serializeUser((user, done) => {
-    done(null, user.id)
+    done(null, user)
   })
 
   passport.deserializeUser((obj, done) => {
