@@ -19,7 +19,7 @@ router.post(
 
 router.post('/logout', (req, res) => {
   req.logout()
-  res.redirect('/')
+  res.redirect('/profile')
 })
 
 router.get('/login/facebook', passport.authenticate('facebook', { scope: 'email' }))
