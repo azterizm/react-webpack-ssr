@@ -4,8 +4,6 @@ const webpackNodeExternals = require('webpack-node-externals')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const {InjectManifest} = require('workbox-webpack-plugin')
 
-// TODO: Make production build
-// TODO: Use only one Css build to optimize
 module.exports = [
   {
     name: 'client',
@@ -46,6 +44,24 @@ module.exports = [
         include: ['/main.js', '/styles.css']
       })
     ],
+    optimization: {
+      runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all',
+        maxInitialRequests: Infinity,
+        minSize: 0,
+        cacheGroups: {
+          react: {
+            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            name: 'react'
+          },
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendor'
+          }
+        }
+      }
+    }
   },
 
   {

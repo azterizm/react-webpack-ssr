@@ -50,6 +50,7 @@ app.use(passport.session())
 app.use('/account', authRouter)
 app.get('*', (req, res) => {
   const state: AppState = { name: 'Bro!', user: req.user, flash: req.flash() }
+  const scripts: string[] = ['main.js', 'react.js', 'runtime.js', 'vendor.js']
 
   let appMarkup: string = renderToString(
     <StaticRouter location={req.url}>
@@ -60,7 +61,7 @@ app.get('*', (req, res) => {
   const helmet = Helmet.renderStatic()
 
   const html: string = renderToStaticMarkup(
-    <Html children={appMarkup} scripts={['main.js']} state={state} helmet={helmet} />
+    <Html children={appMarkup} scripts={scripts} state={state} helmet={helmet} />
   )
 
   res.send(`<!DOCTYPE html> ${html}`)
